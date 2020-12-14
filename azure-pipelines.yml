@@ -1,0 +1,13 @@
+trigger:
+  branches:
+    include:
+      - '*'
+
+name: $(BuildID)
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+  - template: set-tag.template.yml
