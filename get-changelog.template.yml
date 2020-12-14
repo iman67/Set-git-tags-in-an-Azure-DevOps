@@ -1,0 +1,9 @@
+steps:
+- pwsh: |
+    $cl = Get-Content 'CHANGELOG.md'
+    $version = ($cl | Sort-Object { [version] ($_ -replace '^.*?(\d+(\.\d+){1,3})$', '$1') } -Descending -ErrorAction SilentlyContinue)[0]
+    $version = $version | Select-String -Pattern "\d.\d.\d" | foreach {$_.Matches.Value}
+    echo "##vso[task.setvariable variable=cl_version]$version"
+    write-output "latest version is: $version"
+  workingDirectory:  $(Build.SourcesDirectory)
+  displayName:  get-changelog-version
